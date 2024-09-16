@@ -1,23 +1,40 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa6";
 import { SlOptionsVertical } from "react-icons/sl";
 import Conversation from "./Conversation";
 import { GrLogout } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
 const Home = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
   }
-  const handleLogout = ()=>{
-    navigate('/login')
-    console.log("Hello")
+  useEffect(() => {
+    if (message) {
+      toast.info(message);
+    }
+    if (error) {
+      toast.error(error);
+      dispatch(clearErrors());
+    }
+    if (!isAuth) {
+      navigate('/login')
+    }
+  }, [message, error, dispatch, isAuth, navigate])
+  const handleLogout = () => {
+    dispatch(logoutUserNow());
   }
   return (
     <div className="w-full flex flex-col justify-center items-center">
+      <ToastContainer />
       <div className="w-[100%] sm:w-[600px] sm:mt-8 h-full bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 ">
         <div className="flex justify-between sm:h-12">
           <div className="text-white font-bold text-2xl p-2">LetsChaT</div>
@@ -42,8 +59,8 @@ const Home = () => {
           <span className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
             <CgProfile title="Profile" />
           </span>
-          <span onClick={handleLogout} className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
-            <GrLogout title="Logout"  />
+          <span disabled={loading} onClick={handleLogout} className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
+            <GrLogout title="Logout" />
           </span>
         </div>
       </div>

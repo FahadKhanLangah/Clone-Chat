@@ -28,7 +28,7 @@ const Register = () => {
     if (isAuth) {
       navigate('/')
     }
-  }, [error, isAuth, navigate])
+  }, [error, isAuth, navigate, dispatch])
   const handleRegister = (e) => {
     e.preventDefault();
     const formData = new FormData();
