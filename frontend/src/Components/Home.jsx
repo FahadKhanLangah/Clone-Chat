@@ -4,7 +4,7 @@ import { SlOptionsVertical } from "react-icons/sl";
 import Conversation from "./Conversation";
 import { GrLogout } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
@@ -12,7 +12,8 @@ const Home = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
+  const { isAuth, message, error, loading, user } = useSelector((v) => v.auth);
+  console.log(user)
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
@@ -56,9 +57,9 @@ const Home = () => {
       </div>
       <div className="w-full sm:ml-10">
         <div className="flex text-4xl gap-6 mt-3 px-2 py-3 sm:-mt-10 sm:py-0">
-          <span className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
+          <Link to={'/profile'}><span className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
             <CgProfile title="Profile" />
-          </span>
+          </span></Link>
           <span disabled={loading} onClick={handleLogout} className="hover:text-orange-600 hover:text-5xl transition-all duration-300">
             <GrLogout title="Logout" />
           </span>
