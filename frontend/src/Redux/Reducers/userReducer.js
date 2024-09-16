@@ -1,8 +1,8 @@
 import { CLEAR_ERRORS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
 
 const authState = {
-  isAuth: false,
-  user: {},
+  isAuth: localStorage.getItem('isAuth') === 'true',
+  user: JSON.parse(localStorage.getItem('user')) || {},
   users: [],
   error: null
 }
@@ -18,6 +18,8 @@ export const authReducer = (state = authState, action) => {
       }
     case REGISTER_USER_SUCCESS:
     case LOGIN_USER_SUCCESS:
+      localStorage.setItem('isAuth', action.payload.success);
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
       return {
         ...state,
         loading: false,
@@ -27,6 +29,8 @@ export const authReducer = (state = authState, action) => {
         message: action.payload.message,
       }
     case LOGOUT_USER_SUCCESS:
+      localStorage.removeItem('isAuth');
+      localStorage.removeItem('user');
       return {
         ...state,
         error: null,
