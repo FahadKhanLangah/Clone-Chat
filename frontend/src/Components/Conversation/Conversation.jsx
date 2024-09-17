@@ -1,14 +1,22 @@
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import Chat from './Chat'
 import SendMessage from './SendMessage'
 import { useParams } from 'react-router-dom'
+import { useEffect } from 'react'
+import { getOtherUsers } from '../../Redux/Actions/userAction'
 
 const Conversation = () => {
-  const { users } = useSelector((v) => v.users);
+  const { users, loading } = useSelector((v) => v.users);
   const { id } = useParams();
   const chatUser = users.find((user) => user._id === id);
-  if (!chatUser) {
-    return <div>User not found</div>;
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (users.length === 0) {
+      dispatch(getOtherUsers());
+    }
+  }, [dispatch, users]);
+  if (loading) {
+    return <div>Please wait</div>;
   }
   return (
     <div className='sm:w-[600px] w-full h-full bg-purple-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100'>

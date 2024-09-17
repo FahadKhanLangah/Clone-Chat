@@ -28,7 +28,7 @@ export const RegisterUserNow = (formData) => async (dispatch) => {
     dispatch({ type: REGISTER_USER_REQ });
     const config = {
       headers: {
-        'Content-Type': 'application/json',
+        'Content-Type': 'multi-part/form-data',
       },
     };
     const { data } = await axios.post('/api/v1/users/register', formData, config);
