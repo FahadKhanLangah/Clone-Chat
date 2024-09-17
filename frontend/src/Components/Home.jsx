@@ -1,19 +1,18 @@
 import { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa6";
 import { SlOptionsVertical } from "react-icons/sl";
-import Conversation from "./Conversation";
 import { GrLogout } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
+import OtherUser from "./OtherUser";
 const Home = () => {
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading, user } = useSelector((v) => v.auth);
-  console.log(user)
+  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
@@ -52,7 +51,7 @@ const Home = () => {
           <input onChange={(e) => setSearch(e.target.value)} className="w-[90%] placeholder-white m-2 focus:placeholder-blue-900 rounded-lg h-8 bg-transparent text-white border-[1px] px-4 py-3 backdrop-blur-3xl bg-opacity-100" type="text" placeholder="Search here" />
         </form>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          <Conversation />
+          <OtherUser />
         </div>
       </div>
       <div className="w-full sm:ml-10">

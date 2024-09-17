@@ -5,7 +5,7 @@ import { IoArrowBack } from "react-icons/io5";
 const Profile = () => {
   const { user } = useSelector((v) => v.auth);
   return (
-    <div className='bg-blue-900 h-full rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20'>
+    <div className='bg-blue-900 w-[420px] sm:w-[600px] h-full rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20'>
       <div className="flex ml-5 gap-5 text-3xl text-black font-bold p-2">
         <span onClick={()=>window.history.back()} className='pt-1 hover:text-white'>
           <IoArrowBack/>

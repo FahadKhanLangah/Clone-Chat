@@ -1,4 +1,4 @@
-import { CLEAR_ERRORS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
+import { CLEAR_ERRORS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
 
 const authState = {
   isAuth: localStorage.getItem('isAuth') === 'true',
@@ -62,5 +62,34 @@ export const authReducer = (state = authState, action) => {
       };
     default:
       return state
+  }
+}
+const userState = {
+  users: [],
+  error: null,
+  loading: false
+}
+export const userReducer = (state = userState, action) => {
+  switch (action.type) {
+    case OTHER_USER_REQ:
+      return {
+        ...state,
+        loading: true
+      }
+    case OTHER_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        users: action.payload.users
+      }
+    case OTHER_USER_FAIL:
+      return {
+        ...state,
+        loading: false,
+        users: [],
+        error: action.payload
+      }
+    default:
+      return { ...state }
   }
 }

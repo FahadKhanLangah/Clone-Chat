@@ -146,11 +146,33 @@ export const loginUserDetail = async (req, res) => {
 
 export const getAllUsers = async (req, res) => {
   try {
-    const users = await User.find({});
+    const users = await User.find({}).select("-password");
     if (!users) {
       return res.status(400).json({
         success: false,
         message: `Users does not exists.`
+      });
+    }
+    res.status(201).json({
+      success: true,
+      users
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    });
+  }
+};
+
+export const getOtherUsers = async (req, res) => {
+  try {
+    const users = await User.find({ _id: { $ne: req.user._id } }).select("-password");
+    if (!users || users.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: `No other users found`
       });
     }
     res.status(201).json({
