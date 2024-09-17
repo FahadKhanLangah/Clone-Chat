@@ -8,11 +8,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
+import MyConversation from "./Conversation/MyConversation";
 const Home = () => {
   const [search, setSearch] = useState('');
+  const [active, setActive] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
+  const { isAuth, message, error, loading, user } = useSelector((v) => v.auth);
+  console.log(user)
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
@@ -50,8 +53,16 @@ const Home = () => {
         <form onSubmit={handleSearch} className="w-full flex items-center justify-center">
           <input onChange={(e) => setSearch(e.target.value)} className="w-[90%] placeholder-white m-2 focus:placeholder-blue-900 rounded-lg h-8 bg-transparent text-white border-[1px] px-4 py-3 backdrop-blur-3xl bg-opacity-100" type="text" placeholder="Search here" />
         </form>
+        <div className="flex gap-5 p-2">
+          <span onClick={() => setActive(false)} className={`rounded-md cursor-pointer  font-bold p-1 ${active === false ? "bg-gray-200 text-black" : ""}`}>
+            All Users
+          </span>
+          <span onClick={() => setActive(true)} className={`rounded-md cursor-pointer font-bold p-1  ${active ? "bg-gray-200 text-black" : ""}`}>
+            My Conversations
+          </span>
+        </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          <OtherUser />
+          {active ? <MyConversation/> : <OtherUser />}
         </div>
       </div>
       <div className="w-full sm:ml-10">

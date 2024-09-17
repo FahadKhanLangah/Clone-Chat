@@ -19,7 +19,7 @@ const Conversation = () => {
     return <div>Please wait</div>;
   }
   return (
-    <div className='sm:w-[600px] w-full h-full bg-purple-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100'>
+    <div className='sm:mt-2 sm:mb-2 sm:w-[600px] w-full h-full bg-purple-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100'>
       <div className='p-2 flex gap-4 h-[10vh] sm:h-[14vh]'>
         <img className='h-16 w-16 p-1 object-fill rounded-full' src={chatUser?.avatar?.url} alt="No image found" />
         <div className='p-2'>

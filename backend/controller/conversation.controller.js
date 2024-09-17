@@ -28,7 +28,10 @@ export const createConversation = async (req, res) => {
 export const getConversation = async (req, res) => {
   try {
     const userId = req.user._id;
-    const conversations = await Conversation.find({ participants: userId })
+    const conversations = await Conversation.find({ participants: userId }).populate({
+      path: 'participants',
+      select: '-password', 
+    }).select("-password")
     if (!conversations) {
       return res.status(404).json({
         success: false,
@@ -51,7 +54,10 @@ export const getConversationDetail = async (req, res) => {
   try {
     const conversationId = req.params.id;
     console.log(conversationId);
-    const conversation = await Conversation.findById(conversationId).populate("participants")
+    const conversation = await Conversation.findById(conversationId).populate({
+      path: 'participants',
+      select: '-password',
+    }).select("-password")
     if (!conversation) {
       return res.status(404).json({
         success: false,
