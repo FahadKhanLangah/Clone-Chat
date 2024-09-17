@@ -2,7 +2,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Chat from './Chat'
 import SendMessage from './SendMessage'
 import { useParams } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useEffect} from 'react'
 import { getOtherUsers } from '../../Redux/Actions/userAction'
 
 const Conversation = () => {

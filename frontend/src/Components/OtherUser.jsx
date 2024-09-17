@@ -3,10 +3,12 @@ import { getOtherUsers } from "../Redux/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import { createConversation } from "../Redux/Actions/converAction";
 
 const OtherUser = () => {
   const dispatch = useDispatch();
   const { users, error, loading } = useSelector((v) => v.users);
+  const { user } = useSelector((v) => v.auth);
   useEffect(() => {
     dispatch(getOtherUsers())
   }, [dispatch])
@@ -16,8 +18,14 @@ const OtherUser = () => {
     }
   }, [error]);
   const navigate = useNavigate();
-  const handleNavigate = (id) => {
-    navigate(`/conversation/${id}`)
+  const handleNavigate = (otherId) => {
+    const formdata = {
+      participants: [
+        otherId, user._id
+      ]
+    }
+    dispatch(createConversation(formdata))
+    navigate(`/conversation/${otherId}`)
   }
   if (loading) {
     return <>

@@ -6,10 +6,9 @@ import { useNavigate } from "react-router-dom";
 
 const MyConversation = () => {
   const { error, conversations } = useSelector((v) => v.conversations);
-  const { user } = useSelector((v) => v.auth); // Get logged-in user
+  const { user } = useSelector((v) => v.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
   useEffect(() => {
     dispatch(getConversation());
   }, [dispatch]);
@@ -38,7 +37,7 @@ const MyConversation = () => {
             <div
               key={i}
               className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400"
-              onClick={() => handleNavigate(conversation._id)} // Move this click handler to the parent div
+              onClick={() => handleNavigate(otherParticipant._id)} 
             >
               <div className="flex flex-[20%] items-center h-20 w-20 border-b-1 mt-1">
                 <img

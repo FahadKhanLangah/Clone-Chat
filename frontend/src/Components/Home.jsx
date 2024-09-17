@@ -14,8 +14,7 @@ const Home = () => {
   const [active, setActive] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading, user } = useSelector((v) => v.auth);
-  console.log(user)
+  const { isAuth, message, error, loading} = useSelector((v) => v.auth);
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
