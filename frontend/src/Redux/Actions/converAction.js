@@ -8,7 +8,7 @@ export const getConversation = () => async (dispatch) => {
     const { data } = await axios.get('/api/v1/conversation/get');
     dispatch({
       type: GET_CONVERSATION_SUCCESS,
-      payload : data.conversations
+      payload : data
     })
   } catch (error) {
     dispatch({
