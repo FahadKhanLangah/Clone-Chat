@@ -3,11 +3,18 @@ import { IoMdSend } from "react-icons/io";
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 import { sendMessage } from '../../Redux/Actions/converAction';
+import socket from '../../socket';
+
 const SendMessage = () => {
   const [msg, setMsg] = useState('');
   const dispatch = useDispatch();
   const { converId } = useSelector((v) => v.conversations);
-  console.log(converId);
+  const { user } = useSelector((v) => v.auth)
+  useEffect(() => {
+    if (converId) {
+      socket.emit('joinConversation', converId);
+    }
+  }, [converId]);
   const { error, success } = useSelector((v) => v.message);
   useEffect(() => {
     if (error) {
@@ -15,16 +22,19 @@ const SendMessage = () => {
     }
     if (success) {
       toast.success("Message Sent SuccessFully");
-      setMsg("");
     }
   }, [error, success]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    const formData = {
-      message : msg
-    }
-    if (converId) {
-      dispatch(sendMessage(converId, formData));
+    if (msg && converId) {
+      const messageData = {
+        conversationId: converId,
+        sender: user._id,
+        message: msg,
+      };
+      socket.emit('sendMessage', messageData);
+      // dispatch(sendMessage(converId, { message: msg }));
+      setMsg("");
     }
   }
   return (
@@ -38,5 +48,4 @@ const SendMessage = () => {
     </form>
   )
 }
-
 export default SendMessage

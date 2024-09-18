@@ -13,10 +13,11 @@ cloudinary.config({
 })
 connectDB();
 
+// Socket Set up
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "http://localhost:3000", //  frontend URL, change for deployment
+    origin: "http://localhost:5173",
     methods: ["GET", "POST"],
   },
 });
@@ -24,17 +25,29 @@ const io = new Server(server, {
 io.on('connection', (socket) => {
   console.log(`User connected: ${socket.id}`);
 
+  // Listen for joining a conversation
   socket.on('joinConversation', (conversationId) => {
-    socket.join(conversationId);
-    console.log(`User with ID ${socket.id} joined conversation ${conversationId}`);
+    const rooms = Array.from(socket.rooms);
+    if (!rooms.includes(conversationId)) {
+      socket.join(conversationId);
+      console.log(`User with ID ${socket.id} joined conversation ${conversationId}`);
+    }
   });
 
+  // Listen for sending a message
   socket.on('sendMessage', (messageData) => {
     const { conversationId, sender, message } = messageData;
     // Emit the message to the conversation room
-    io.to(conversationId).emit('newMessage', message);
+    io.to(conversationId).emit('receiveMessage', {
+      sender,
+      message,
+      conversationId,
+      createdAt: new Date(),
+    });
+
     console.log(`Message sent in conversation ${conversationId}`);
   });
+
   socket.on('disconnect', () => {
     console.log(`User disconnected: ${socket.id}`);
   });
