@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMessage } from "../../Redux/Actions/converAction";
 import { toast, ToastContainer } from 'react-toastify'
@@ -7,9 +7,13 @@ import socket from "../../socket";
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const { converId } = useSelector((v) => v.conversations);
-  const { loading, messages, error } = useSelector((v) => v.message);
+  const { messages, error } = useSelector((v) => v.message);
   const { user } = useSelector((v) => v.auth);
   const dispatch = useDispatch();
+  const chatEndRef = useRef(null);
+  useEffect(() => {
+    chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages, chat]);
   useEffect(() => {
     if (converId) {
       dispatch(getMessage(converId));
@@ -18,7 +22,6 @@ const Chat = () => {
   }, [dispatch, converId]);
   useEffect(() => {
     socket.on('receiveMessage', (newMessage) => {
-      console.log('New message received:', newMessage);
       setChat((prevChat) => [ ...prevChat,newMessage]);
     });
     return () => {
@@ -31,11 +34,6 @@ const Chat = () => {
     }
   }, [error])
   const allMessages = [...messages, ...chat];
-  if (loading) {
-    return <>
-      loading.....
-    </>
-  }
   return (
     <div className='p-4 flex flex-col space-y-4'>
       <ToastContainer />
@@ -48,8 +46,8 @@ const Chat = () => {
           </div>
         )
       }
+      <div ref={chatEndRef} />
     </div>
   )
 }
-
 export default Chat

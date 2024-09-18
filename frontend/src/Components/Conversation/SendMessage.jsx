@@ -13,17 +13,15 @@ const SendMessage = () => {
   useEffect(() => {
     if (converId) {
       socket.emit('joinConversation', converId);
+      socket.connect();
     }
   }, [converId]);
-  const { error, success } = useSelector((v) => v.message);
+  const { error } = useSelector((v) => v.message);
   useEffect(() => {
     if (error) {
       toast.error(error)
     }
-    if (success) {
-      toast.success("Message Sent SuccessFully");
-    }
-  }, [error, success]);
+  }, [error]);
   const handleSubmit = (e) => {
     e.preventDefault();
     if (msg && converId) {
@@ -33,7 +31,7 @@ const SendMessage = () => {
         message: msg,
       };
       socket.emit('sendMessage', messageData);
-      // dispatch(sendMessage(converId, { message: msg }));
+      dispatch(sendMessage(converId, { message: msg }));
       setMsg("");
     }
   }
