@@ -28,7 +28,7 @@ const Conversation = () => {
         </div>
       </div>
       <hr />
-      <div className='h-[85vh] sm:h-[75vh] overflow-auto'>
+      <div className='h-[82vh] sm:h-[75vh] overflow-auto'>
         <Chat />
       </div>
       <div className='h-[8vh] sm:h-[11vh]'>
