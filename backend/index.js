@@ -23,29 +23,23 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  console.log(`User connected: ${socket.id}`);
-
   // Listen for joining a conversation
   socket.on('joinConversation', (conversationId) => {
     const rooms = Array.from(socket.rooms);
     if (!rooms.includes(conversationId)) {
       socket.join(conversationId);
-      console.log(`User with ID ${socket.id} joined conversation ${conversationId}`);
     }
   });
 
   // Listen for sending a message
   socket.on('sendMessage', (messageData) => {
     const { conversationId, sender, message } = messageData;
-    // Emit the message to the conversation room
     io.to(conversationId).emit('receiveMessage', {
       sender,
       message,
       conversationId,
       createdAt: new Date(),
     });
-
-    console.log(`Message sent in conversation ${conversationId}`);
   });
 
   socket.on('disconnect', () => {
