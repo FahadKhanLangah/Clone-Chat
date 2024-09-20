@@ -4,6 +4,7 @@ import { config } from 'dotenv';
 import connectDB from './config/db.js';
 import app from './app.js';
 import cloudinary from 'cloudinary';
+import SocketFunc from './utils/socket.js';
 
 config();
 cloudinary.config({
@@ -23,42 +24,7 @@ const io = new Server(server, {
   },
 });
 
-io.on('connection', (socket) => {
-  socket.on('joinConversation', (conversationId) => {
-    const rooms = Array.from(socket.rooms);
-    if (!rooms.includes(conversationId)) {
-      socket.join(conversationId);
-    }
-  });
-  socket.on('joinGame', (gameId) => {
-    const rooms = Array.from(socket.rooms);
-    if (!rooms.includes(gameId)) {
-      socket.join(gameId);
-    }
-    console.log("User joined game with id ", socket.id)
-  });
-  socket.on("game", (gameData) => {
-    const { id, pick, sender } = gameData
-    io.to(id).emit('sendMove', {
-      pick,
-      sender,
-      createdAt: new Date()
-    })
-  });
-  socket.on('sendMessage', (messageData) => {
-    const { conversationId, sender, message } = messageData;
-    io.to(conversationId).emit('receiveMessage', {
-      sender,
-      message,
-      conversationId,
-      createdAt: new Date(),
-    });
-  });
-
-  socket.on('disconnect', () => {
-    console.log(`User disconnected: ${socket.id}`);
-  });
-});
+SocketFunc(io);
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
