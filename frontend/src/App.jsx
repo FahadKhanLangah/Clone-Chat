@@ -4,6 +4,7 @@ import Login from './Components/Login';
 import Register from './Components/Register';
 import Profile from './Components/Profile/Profile';
 import Conversation from './Components/Conversation/Conversation';
+import Game from './Components/Game/Game';
 const route = createBrowserRouter([
   {
     path: '/',
@@ -24,6 +25,10 @@ const route = createBrowserRouter([
   {
     path : '/conversation/:id',
     element : < Conversation />
+  },
+  {
+    path : '/game/:id',
+    element : < Game />
   }
 ])
 function App() {

@@ -10,7 +10,6 @@ export const LoginUserNow = (formData) => async (dispatch) => {
       },
     };
     const { data } = await axios.post('/api/v1/users/login', formData, config);
-    console.log(data);
     dispatch({
       type: LOGIN_USER_SUCCESS,
       payload: data

@@ -30,6 +30,16 @@ io.on('connection', (socket) => {
       socket.join(conversationId);
     }
   });
+  socket.on('joinGame', (gameId) => {
+    const rooms = Array.from(socket.rooms);
+    if (!rooms.includes(gameId)) {
+      socket.join(gameId);
+    }
+    console.log("User joined game with id ",socket.id)
+  });
+  socket.on("game",(pick)=>{
+    console.log(pick)
+  });
 
   // Listen for sending a message
   socket.on('sendMessage', (messageData) => {

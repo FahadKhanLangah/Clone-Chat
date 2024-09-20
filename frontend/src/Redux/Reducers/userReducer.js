@@ -84,6 +84,10 @@ export const userReducer = (state = userState, action) => {
         error: null
       }
     case OTHER_USER_FAIL:
+      if (action.payload === "Session expired. Please log in again.") {
+        localStorage.removeItem('isAuth');
+        localStorage.removeItem('user');
+      }
       return {
         ...state,
         loading: false,
