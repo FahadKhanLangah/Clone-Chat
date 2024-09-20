@@ -4,11 +4,15 @@ import rock from '../../assets/rock.png';
 import { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import socket from '../../socket';
+import { useSelector } from 'react-redux';
 const Game = () => {
   const [pick, setPick] = useState('');
   const [myPick, setMyPick] = useState();
-  const [timer, setTimer] = useState(5);
+  const [opponentPick, setOpponentPick] = useState();
+  const [timer, setTimer] = useState(2);
+  const { user } = useSelector((v) => v.auth);
   const { id } = useParams();
+  const { users } = useSelector((v) => v.users);
   useEffect(() => {
     if (id) {
       socket.emit('joinGame', id);
@@ -16,11 +20,16 @@ const Game = () => {
     }
   }, [id]);
   const handleSubmit = useCallback(() => {
-    if (pick) {
-      socket.emit("game", pick);
-      setPick(''); 
+    if (pick && user) {
+      const data = {
+        id,
+        pick,
+        sender: user._id
+      }
+      socket.emit("game", data);
+      setPick('');
     }
-  }, [pick]);
+  }, [pick, id, user]);
   useEffect(() => {
     if (pick) {
       if (pick === "Paper") {
@@ -37,17 +46,35 @@ const Game = () => {
       }, 1000);
       const timeout = setTimeout(() => {
         handleSubmit();
-      }, 5000);
+      }, 2000);
       return () => {
         clearInterval(interval);
         clearTimeout(timeout);
-        setTimer(5);
+        setTimer(2);
       };
     }
-  }, [pick,handleSubmit]);
-  const hanldeKey = (e)=>{
-    console.log(e.key)
-  }
+  }, [pick, handleSubmit]);
+  const [opponetUser, setOpponentUser] = useState();
+  useEffect(() => {
+    socket.on('sendMove', (data) => {
+      const opponetUser = users.find((v) => v._id === data.sender.toString());
+      if (opponetUser) {
+        setOpponentUser(opponetUser);
+        if (data.pick === "Paper") {
+          setOpponentPick(paper)
+        }
+        if (data.pick === "Scissor") {
+          setOpponentPick(scissor)
+        }
+        if (data.pick === "Rock") {
+          setOpponentPick(rock)
+        }
+      }
+    })
+    return () => {
+      socket.off('sendMove');
+    };
+  }, [users])
   return (
     <div className='w-full h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100'>
       <div>
@@ -55,7 +82,7 @@ const Game = () => {
         <p className='text-center text-5xl pb-4 font-bold '>{timer}</p>
       </div>
       <form onSubmit={handleSubmit} className='flex items-center justify-center gap-4 mb-6'>
-        <img type="submit" onKeyDown={(e)=>hanldeKey(e)} onClick={() => setPick("Paper")} className='h-28 w-28 rounded-full hover:scale-110 duration-100' src={paper} alt="Paper" />
+        <img type="submit" onClick={() => setPick("Paper")} className='h-28 w-28 rounded-full hover:scale-110 duration-100' src={paper} alt="Paper" />
         <img type="submit" onClick={() => setPick("Scissor")} className='h-28 w-28 rounded-full hover:scale-110 duration-100' src={scissor} alt="Scissor" />
         <img type="submit" onClick={() => setPick("Rock")} className='h-28 w-28 rounded-full hover:scale-110 duration-100' src={rock} alt="Scissor" />
       </form>
@@ -66,8 +93,8 @@ const Game = () => {
           <img className='h-28 w-28 rounded-full' src={myPick} alt="Paper" />
         </div>
         <div className='flex gap-10'>
-          <h1 className='text-2xl pt-8 font-bold'>Tariq Move</h1>
-          <img className='h-28 w-28 rounded-full' src={scissor} alt="Scissor" />
+          <h1 className='text-2xl pt-8 font-bold'>{opponetUser?.name} Move</h1>
+          <img className='h-28 w-28 rounded-full' src={opponentPick} alt="Scissor" />
         </div>
       </div>
       <div className='m-6 flex'>

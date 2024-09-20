@@ -18,4 +18,8 @@ export const OTHER_USER_REQ = "OTHER_USER_REQ";
 export const OTHER_USER_SUCCESS = "OTHER_USER_SUCCESS";
 export const OTHER_USER_FAIL = "OTHER_USER_FAIL";
 
+export const CHAT_USER_REQ = "CHAT_USER_REQ";
+export const CHAT_USER_SUCCESS = "OTHERCHAT_SUCCESS";
+export const CHAT_USER_FAIL = "CHAT_USER_FAIL";
+
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';

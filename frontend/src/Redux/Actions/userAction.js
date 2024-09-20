@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CLEAR_ERRORS, LOAD_USER_REQ, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from '../Constants/userConstant';
+import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOAD_USER_REQ, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from '../Constants/userConstant';
 
 export const LoginUserNow = (formData) => async (dispatch) => {
   try {
@@ -77,6 +77,24 @@ export const getOtherUsers = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: OTHER_USER_FAIL,
+      payload: error.response || error.response.data.message ?
+        error.response.data.message : error.message
+    })
+  }
+}
+
+export const getChatUsers = (id) => async (dispatch) => {
+  try {
+    dispatch({ type: CHAT_USER_REQ });
+    const { data } = await axios.get(`/api/v1/conversation/detail/${id}`);
+    console.log(data)
+    dispatch({
+      type: CHAT_USER_SUCCESS,
+      payload: data.conversation
+    })
+  } catch (error) {
+    dispatch({
+      type: CHAT_USER_FAIL,
       payload: error.response || error.response.data.message ?
         error.response.data.message : error.message
     })

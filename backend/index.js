@@ -13,6 +13,7 @@ cloudinary.config({
 })
 connectDB();
 
+
 // Socket Set up
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -23,7 +24,6 @@ const io = new Server(server, {
 });
 
 io.on('connection', (socket) => {
-  // Listen for joining a conversation
   socket.on('joinConversation', (conversationId) => {
     const rooms = Array.from(socket.rooms);
     if (!rooms.includes(conversationId)) {
@@ -35,13 +35,17 @@ io.on('connection', (socket) => {
     if (!rooms.includes(gameId)) {
       socket.join(gameId);
     }
-    console.log("User joined game with id ",socket.id)
+    console.log("User joined game with id ", socket.id)
   });
-  socket.on("game",(pick)=>{
-    console.log(pick)
+  socket.on("game", (gameData) => {
+    const { id, pick, sender } = gameData
+    io.to(id).emit('sendMove', {
+      pick,
+      sender,
+      createdAt: new Date()
+    })
   });
 
-  // Listen for sending a message
   socket.on('sendMessage', (messageData) => {
     const { conversationId, sender, message } = messageData;
     io.to(conversationId).emit('receiveMessage', {

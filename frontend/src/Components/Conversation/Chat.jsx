@@ -22,7 +22,7 @@ const Chat = () => {
   }, [dispatch, converId]);
   useEffect(() => {
     socket.on('receiveMessage', (newMessage) => {
-      setChat((prevChat) => [ ...prevChat,newMessage]);
+      setChat((prevChat) => [...prevChat, newMessage]);
     });
     return () => {
       socket.off('receiveMessage');
