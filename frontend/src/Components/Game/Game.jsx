@@ -9,7 +9,7 @@ const Game = () => {
   const [pick, setPick] = useState('');
   const [myPick, setMyPick] = useState();
   const [opponentPick, setOpponentPick] = useState();
-  const [timer, setTimer] = useState(2);
+  const [timer, setTimer] = useState(5);
   const { user } = useSelector((v) => v.auth);
   const { id } = useParams();
   const { users } = useSelector((v) => v.users);
@@ -46,11 +46,11 @@ const Game = () => {
       }, 1000);
       const timeout = setTimeout(() => {
         handleSubmit();
-      }, 2000);
+      }, 5000);
       return () => {
         clearInterval(interval);
         clearTimeout(timeout);
-        setTimer(2);
+        setTimer(5);
       };
     }
   }, [pick, handleSubmit]);

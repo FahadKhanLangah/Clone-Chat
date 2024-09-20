@@ -45,7 +45,6 @@ io.on('connection', (socket) => {
       createdAt: new Date()
     })
   });
-
   socket.on('sendMessage', (messageData) => {
     const { conversationId, sender, message } = messageData;
     io.to(conversationId).emit('receiveMessage', {
