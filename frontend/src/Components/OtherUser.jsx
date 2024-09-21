@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { createConversation } from "../Redux/Actions/converAction";
-
+import PropTypes from 'prop-types'; 
 const OtherUser = ({onlineUser}) => {
   const dispatch = useDispatch();
   const { users, error, loading } = useSelector((v) => v.users);
@@ -58,5 +58,8 @@ const OtherUser = ({onlineUser}) => {
     </>
   )
 }
+OtherUser.propTypes = {
+  onlineUser: PropTypes.arrayOf(PropTypes.string).isRequired, 
+};
 
 export default OtherUser
