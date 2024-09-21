@@ -47,7 +47,7 @@ const Game = () => {
   }, [pick, id, user]);
   useEffect(() => {
     socket.on("startTimer", () => {
-      setTimer(5);
+      setTimer(3);
       const interval = setInterval(() => {
         setTimer((prevTimer) => {
           if (prevTimer > 0) {
@@ -61,7 +61,7 @@ const Game = () => {
       setIntervalId(interval);
       const timeout = setTimeout(() => {
         handleSubmit();
-      }, 5000);
+      }, 3000);
       return () => {
         clearInterval(interval);
         clearTimeout(timeout);
@@ -119,7 +119,7 @@ const Game = () => {
   };
 
   return (
-    <div className='w-full h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100'>
+    <div className='w-full h-[850px] sm:h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100'>
       <div>
         <h1 className='text-3xl font-bold text-black'>Pick Your Move</h1>
         <p className='text-center text-5xl pb-4 font-bold '>{timer !== null ? timer : ''}</p>
@@ -150,7 +150,7 @@ const Game = () => {
       </div>
       <div className='m-6 flex flex-col gap-2 sm:flex-row'>
         <button onClick={handleResetScore} className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Reset Scores</button>
-        <button className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Exit Game</button>
+        <button onClick={()=>window.history.back()} className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Exit Game</button>
       </div>
     </div>
   )
