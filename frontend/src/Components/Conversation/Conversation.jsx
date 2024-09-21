@@ -4,6 +4,7 @@ import SendMessage from './SendMessage'
 import { useParams } from 'react-router-dom'
 import { useEffect } from 'react'
 import { getOtherUsers } from '../../Redux/Actions/userAction'
+import { IoArrowBack } from 'react-icons/io5'
 
 const Conversation = () => {
   const { users, loading, onlineUsers } = useSelector((v) => v.users);
@@ -21,6 +22,9 @@ const Conversation = () => {
   return (
     <div className='sm:mt-2 sm:mb-2 sm:w-[600px] w-full h-full bg-purple-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100'>
       <div className='p-2 flex gap-4 h-[10vh] sm:h-[14vh]'>
+      <span onClick={() => window.history.back()} className='pt-5 hover:text-orange-400 text-3xl'>
+          <IoArrowBack />
+        </span>
         <img className='h-16 w-16 p-1 object-fill rounded-full' src={chatUser?.avatar?.url} alt="No image found" />
         <div className='p-2'>
           <h1 className='text-2xl font-bold'>{chatUser?.name}</h1>

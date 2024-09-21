@@ -6,6 +6,7 @@ import Profile from './Components/Profile/Profile';
 import Conversation from './Components/Conversation/Conversation';
 import Game from './Components/Game/Game';
 import { ToastContainer } from 'react-toastify';
+import ProfileDetail from './Components/Profile/ProfileDetail';
 const route = createBrowserRouter([
   {
     path: '/',
@@ -22,6 +23,10 @@ const route = createBrowserRouter([
   {
     path : '/profile',
     element : <Profile/>
+  },
+  {
+    path : '/profile/me',
+    element : <ProfileDetail/>
   },
   {
     path : '/conversation/:id',
