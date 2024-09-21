@@ -2,11 +2,11 @@ import { useDispatch, useSelector } from 'react-redux'
 import Chat from './Chat'
 import SendMessage from './SendMessage'
 import { useParams } from 'react-router-dom'
-import { useEffect} from 'react'
+import { useEffect } from 'react'
 import { getOtherUsers } from '../../Redux/Actions/userAction'
 
 const Conversation = () => {
-  const { users, loading } = useSelector((v) => v.users);
+  const { users, loading, onlineUsers } = useSelector((v) => v.users);
   const { id } = useParams();
   const chatUser = users.find((user) => user._id === id);
   const dispatch = useDispatch();
@@ -24,7 +24,7 @@ const Conversation = () => {
         <img className='h-16 w-16 p-1 object-fill rounded-full' src={chatUser?.avatar?.url} alt="No image found" />
         <div className='p-2'>
           <h1 className='text-2xl font-bold'>{chatUser?.name}</h1>
-          <p>{chatUser?.isOnline ? "Online" : "Last Seen today at 12:14 PM"}</p>
+          <p>{onlineUsers.includes(chatUser?._id) ? "Online" : "Last Seen today at 12:14 PM"}</p>
         </div>
       </div>
       <hr />
