@@ -108,6 +108,8 @@ const Game = () => {
       setResult(res);
       const updatedScore = JSON.parse(localStorage.getItem("score")) || { wins: 0, tie: 0, lost: 0 };
       setScore(updatedScore);
+      setOppoMove("");
+      setMyMove("");
     }
   }, [myMove, oppoMove]);
   const handleResetScore = () => {
