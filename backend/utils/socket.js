@@ -1,7 +1,13 @@
 
 export default function SocketFunc(io) {
   let gameRooms = {};
+  let OnlineUsers = {};
   io.on('connection', (socket) => {
+
+    const userId = socket.handshake.query.userId;
+    OnlineUsers[userId] = socket.id;
+    io.emit("userOnline", userId);
+
     socket.on('joinConversation', (conversationId) => {
       const rooms = Array.from(socket.rooms);
       if (!rooms.includes(conversationId)) {
@@ -47,6 +53,8 @@ export default function SocketFunc(io) {
 
     socket.on('disconnect', () => {
       console.log(`User disconnected: ${socket.id}`);
+      delete OnlineUsers[userId];
+      io.emit('userOffline', userId)
     });
   });
 }

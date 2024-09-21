@@ -5,7 +5,7 @@ import { toast, ToastContainer } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { createConversation } from "../Redux/Actions/converAction";
 
-const OtherUser = () => {
+const OtherUser = ({onlineUser}) => {
   const dispatch = useDispatch();
   const { users, error, loading } = useSelector((v) => v.users);
   const { user } = useSelector((v) => v.auth);
@@ -38,12 +38,13 @@ const OtherUser = () => {
       {users && users.length > 0 ? (
         users.map((v, i) => (
           <div key={i} className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400">
-            <div className="flex flex-[20%] items-center h-20 w-20 border-b-1 mt-1">
+            <div className="flex flex-[20%] items-center online h-20 w-20 border-b-1 mt-1 relative">
               <img
-                className="h-16 p-1 m-2 ml-6 w-16 rounded-full"
+                className="online h-16 p-1 m-2 ml-6 w-16 rounded-full"
                 src={v.avatar?.url}
                 alt="User avatar"
               />
+              {onlineUser && onlineUser.includes(v._id)? <div className="absolute  right-0 sm:right-10 top-4 h-3 w-3 border-2 border-white bg-green-500 rounded-full" /> : null}
             </div>
             <div onClick={() => handleNavigate(v._id)} className="pt-4 flex-[80%] pl-6 overflow-hidden h-20">
               <h1 className="text-2xl font-bold">{v.name}</h1>

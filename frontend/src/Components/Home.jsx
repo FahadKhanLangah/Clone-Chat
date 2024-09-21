@@ -9,12 +9,38 @@ import { toast, ToastContainer } from "react-toastify";
 import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
 import MyConversation from "./Conversation/MyConversation";
+import { io } from "socket.io-client";
 const Home = () => {
   const [search, setSearch] = useState('');
   const [active, setActive] = useState(false)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading} = useSelector((v) => v.auth);
+  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
+  const { user } = useSelector((state) => state.auth);
+  const [onlineUsers, setOnlineUsers] = useState([]);
+  console.log(onlineUsers)
+  useEffect(() => {
+    if (user) {
+      const socket = io('http://localhost:4000', {
+        query: { userId: user._id },
+      });
+      socket.on('userOnline', (userId) => {
+        setOnlineUsers((prev) => [...prev, userId]); // Add user to online list
+      });
+
+      // Listen for users going offline
+      socket.on('userOffline', (userId) => {
+        setOnlineUsers((prev) => prev.filter((id) => id !== userId)); // Remove user from online list
+      });
+
+      return () => {
+        socket.disconnect(); // Disconnect socket when component unmounts
+      };
+    }
+  }, [user]);
+
+
+
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
@@ -61,7 +87,8 @@ const Home = () => {
           </span>
         </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          {active ? <MyConversation/> : <OtherUser />}
+          {/* {active ? <MyConversation/> : <OtherUser />} */}
+          <OtherUser onlineUser = {onlineUsers} />
         </div>
       </div>
       <div className="w-full sm:ml-10">
