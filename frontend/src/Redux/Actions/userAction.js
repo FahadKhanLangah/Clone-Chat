@@ -100,3 +100,10 @@ export const getChatUsers = (id) => async (dispatch) => {
     })
   }
 }
+
+export const setOnlineUserNow = (onlineUsers) => (dispatch) => {
+  dispatch({
+    type: 'SET_ONLINE_USERS',
+    payload: onlineUsers,
+  });
+};

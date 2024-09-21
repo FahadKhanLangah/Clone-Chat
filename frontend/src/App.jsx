@@ -5,6 +5,7 @@ import Register from './Components/Register';
 import Profile from './Components/Profile/Profile';
 import Conversation from './Components/Conversation/Conversation';
 import Game from './Components/Game/Game';
+import { ToastContainer } from 'react-toastify';
 const route = createBrowserRouter([
   {
     path: '/',
@@ -35,6 +36,7 @@ function App() {
   return (
     <><div className='w-full h-full flex justify-center items-center'>
       <RouterProvider router={route} />
+      <ToastContainer/>
     </div>
     </>
   )

@@ -65,22 +65,28 @@ export const authReducer = (state = authState, action) => {
   }
 }
 const userState = {
-  users:JSON.parse(localStorage.getItem('users')) || [],
+  users: JSON.parse(localStorage.getItem('users')) || [],
   error: null,
   loading: false,
-  chatUsers : []
+  chatUsers: [],
+  onlineUsers : []
 }
 export const userReducer = (state = userState, action) => {
   switch (action.type) {
     case OTHER_USER_REQ:
-      case CHAT_USER_REQ:
+    case CHAT_USER_REQ:
       return {
         ...state,
         loading: true
       }
+    case 'SET_ONLINE_USERS':
+      return {
+        ...state,
+        onlineUsers: action.payload,
+      };
     case OTHER_USER_SUCCESS:
       if (action.payload.users) {
-        localStorage.setItem('users',JSON.stringify(action.payload.users));
+        localStorage.setItem('users', JSON.stringify(action.payload.users));
       }
       return {
         ...state,
@@ -88,7 +94,7 @@ export const userReducer = (state = userState, action) => {
         users: action.payload.users,
         error: null
       }
-      case CHAT_USER_SUCCESS:
+    case CHAT_USER_SUCCESS:
       return {
         ...state,
         loading: false,
@@ -96,7 +102,7 @@ export const userReducer = (state = userState, action) => {
         error: null
       }
     case OTHER_USER_FAIL:
-      case CHAT_USER_FAIL:
+    case CHAT_USER_FAIL:
       if (action.payload === "Session expired. Please log in again.") {
         localStorage.removeItem('isAuth');
         localStorage.removeItem('user');
@@ -107,7 +113,7 @@ export const userReducer = (state = userState, action) => {
         loading: false,
         users: [],
         error: action.payload,
-        chatUsers : []
+        chatUsers: []
       }
     default:
       return { ...state }

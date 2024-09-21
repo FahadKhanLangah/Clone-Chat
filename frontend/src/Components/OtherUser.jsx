@@ -7,8 +7,9 @@ import { createConversation } from "../Redux/Actions/converAction";
 import PropTypes from 'prop-types'; 
 const OtherUser = ({onlineUser}) => {
   const dispatch = useDispatch();
-  const { users, error, loading } = useSelector((v) => v.users);
+  const { users, error, loading,onlineUsers } = useSelector((v) => v.users);
   const { user } = useSelector((v) => v.auth);
+  console.log("From State",onlineUsers)
   useEffect(() => {
     dispatch(getOtherUsers())
   }, [dispatch])
@@ -34,7 +35,7 @@ const OtherUser = ({onlineUser}) => {
   }
   return (
     <>
-      <ToastContainer></ToastContainer>
+      <ToastContainer/>
       {users && users.length > 0 ? (
         users.map((v, i) => (
           <div key={i} className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400">

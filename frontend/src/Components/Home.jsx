@@ -6,9 +6,9 @@ import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { clearErrors, logoutUserNow } from "../Redux/Actions/userAction";
+import { clearErrors, logoutUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
-import MyConversation from "./Conversation/MyConversation";
+// import MyConversation from "./Conversation/MyConversation";
 import { io } from "socket.io-client";
 const Home = () => {
   const [search, setSearch] = useState('');
@@ -18,7 +18,6 @@ const Home = () => {
   const { isAuth, message, error, loading } = useSelector((v) => v.auth);
   const { user } = useSelector((state) => state.auth);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  console.log(onlineUsers)
   useEffect(() => {
     if (user) {
       const socket = io('http://localhost:4000', {
@@ -26,15 +25,15 @@ const Home = () => {
       });
       socket.on('userOnline', (userId) => {
         setOnlineUsers((prev) => [...prev, userId]); // Add user to online list
+        dispatch(setOnlineUserNow(userId))
       });
-
-      // Listen for users going offline
+      socket.connect();
       socket.on('userOffline', (userId) => {
         setOnlineUsers((prev) => prev.filter((id) => id !== userId)); // Remove user from online list
       });
 
       return () => {
-        socket.disconnect(); // Disconnect socket when component unmounts
+        socket.disconnect(); 
       };
     }
   }, [user]);
