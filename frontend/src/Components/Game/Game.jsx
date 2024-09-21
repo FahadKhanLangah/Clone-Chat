@@ -97,11 +97,24 @@ const Game = () => {
   let [score, setScore] = useState({});
   const [result, setResult] = useState("")
   useEffect(() => {
-    if (myMove && oppoMove) {
-      setResult(ScoreCalc(myMove, oppoMove));
+    const storedScore = localStorage.getItem("score");
+    if (storedScore) {
+      setScore(JSON.parse(storedScore));
     }
-    setScore(JSON.parse(localStorage.getItem("score")));
-  }, [myMove, oppoMove])
+  }, []);
+  useEffect(() => {
+    if (myMove && oppoMove) {
+      const res = ScoreCalc(myMove, oppoMove);
+      setResult(res);
+      const updatedScore = JSON.parse(localStorage.getItem("score")) || { wins: 0, tie: 0, lost: 0 };
+      setScore(updatedScore);
+    }
+  }, [myMove, oppoMove]);
+  const handleResetScore = () => {
+    const resetScore = { wins: 0, tie: 0, lost: 0 };
+    localStorage.setItem("score", JSON.stringify(resetScore));
+    setScore(resetScore); 
+  };
 
   return (
     <div className='w-full h-full bg-purple-400 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-60 border border-gray-100'>
@@ -126,7 +139,7 @@ const Game = () => {
         </div>
       </div>
       <div className='m-6 flex'>
-        <h1 className='text-xl'>Result : {result ? <b className={`font-bold text-4xl p-3 border-2 shadow-lg ${result==="win"?"text-green-400":"text-red-700"}`}>{result.toUpperCase()}</b> : <b>Play to See Result</b>} </h1>
+        <h1 className='text-xl'>Result : {result ? <b className={`font-bold text-4xl p-3 border-2 shadow-lg ${result === "win" ? "text-green-400" : "text-red-700"}`}>{result.toUpperCase()}</b> : <b>Play to See Result</b>} </h1>
       </div>
       <div className='m-6 flex flex-col sm:flex-row justify-evenly'>
         <h1 className='sm:text-2xl font-bold'>Total Wins : <b>{score.wins}</b></h1>
@@ -134,7 +147,7 @@ const Game = () => {
         <h1 className='sm:text-2xl font-bold'>Total Tie : <b>{score.tie}</b></h1>
       </div>
       <div className='m-6 flex flex-col gap-2 sm:flex-row'>
-        <button className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Reset Scores</button>
+        <button onClick={handleResetScore} className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Reset Scores</button>
         <button className='bg-orange-600 text-xl text-black font-bold hover:bg-green-600 duration-300 px-4 py-2'>Exit Game</button>
       </div>
     </div>
