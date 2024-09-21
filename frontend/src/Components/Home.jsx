@@ -27,19 +27,14 @@ const Home = () => {
         setOnlineUsers((prev) => [...prev, userId]); // Add user to online list
         dispatch(setOnlineUserNow(userId))
       });
-      socket.connect();
       socket.on('userOffline', (userId) => {
-        setOnlineUsers((prev) => prev.filter((id) => id !== userId)); // Remove user from online list
+        setOnlineUsers((prev) => prev.filter((id) => id !== userId)); 
       });
-
       return () => {
-        socket.disconnect(); 
+        socket.disconnect();
       };
     }
-  }, [user]);
-
-
-
+  }, [user, dispatch]);
   const handleSearch = (e) => {
     e.preventDefault();
     console.log(search)
@@ -87,7 +82,7 @@ const Home = () => {
         </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
           {/* {active ? <MyConversation/> : <OtherUser />} */}
-          <OtherUser onlineUser = {onlineUsers} />
+          <OtherUser onlineUser={onlineUsers} />
         </div>
       </div>
       <div className="w-full sm:ml-10">

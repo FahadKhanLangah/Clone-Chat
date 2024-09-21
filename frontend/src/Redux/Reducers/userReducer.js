@@ -69,7 +69,7 @@ const userState = {
   error: null,
   loading: false,
   chatUsers: [],
-  onlineUsers : []
+  onlineUsers: []
 }
 export const userReducer = (state = userState, action) => {
   switch (action.type) {
