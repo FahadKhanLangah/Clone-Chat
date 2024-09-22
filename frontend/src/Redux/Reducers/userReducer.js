@@ -1,4 +1,4 @@
-import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOGIN_USER_DETAIL_FAIL, LOGIN_USER_DETAIL_REQ, LOGIN_USER_DETAIL_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
+import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOGIN_USER_DETAIL_FAIL, LOGIN_USER_DETAIL_REQ, LOGIN_USER_DETAIL_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS, UPDATE_USER_FAIL, UPDATE_USER_REQ, UPDATE_USER_SUCCESS } from "../Constants/userConstant";
 
 const authState = {
   isAuth: localStorage.getItem('isAuth') === 'true',
@@ -12,6 +12,7 @@ export const authReducer = (state = authState, action) => {
     case LOGOUT_USER_REQ:
     case LOGIN_USER_REQ:
     case LOGIN_USER_DETAIL_REQ:
+    case UPDATE_USER_REQ:
       return {
         ...state,
         loading: true,
@@ -27,6 +28,12 @@ export const authReducer = (state = authState, action) => {
         error: null,
         user: action.payload.user,
         message: action.payload.message,
+      }
+    case UPDATE_USER_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        message: action.payload.message
       }
     case LOGIN_USER_DETAIL_SUCCESS:
       localStorage.setItem('user', JSON.stringify(action.payload.user));
@@ -64,6 +71,7 @@ export const authReducer = (state = authState, action) => {
         error: action.payload,
       }
     case LOGOUT_USER_FAIL:
+    case UPDATE_USER_FAIL:
       return {
         ...state,
         loading: false,

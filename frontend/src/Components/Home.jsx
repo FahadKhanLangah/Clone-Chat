@@ -15,7 +15,7 @@ const Home = () => {
   const [active, setActive] = useState(true)
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuth, message, error, loading } = useSelector((v) => v.auth);
+  const { isAuth, error, loading } = useSelector((v) => v.auth);
   const { user } = useSelector((state) => state.auth);
   const [onlineUsers, setOnlineUsers] = useState([]);
   useEffect(()=>{
@@ -43,9 +43,6 @@ const Home = () => {
     console.log(search)
   }
   useEffect(() => {
-    if (message) {
-      toast.info(message);
-    }
     if (error) {
       toast.error(error);
       dispatch(clearErrors());
@@ -53,7 +50,7 @@ const Home = () => {
     if (!isAuth) {
       navigate('/login')
     }
-  }, [message, error, dispatch, isAuth, navigate])
+  }, [ error, dispatch, isAuth, navigate])
   const handleLogout = () => {
     dispatch(logoutUserNow());
   }

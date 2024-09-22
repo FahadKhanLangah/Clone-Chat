@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOAD_USER_REQ, LOGIN_USER_DETAIL_FAIL, LOGIN_USER_DETAIL_REQ, LOGIN_USER_DETAIL_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from '../Constants/userConstant';
+import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOAD_USER_REQ, LOGIN_USER_DETAIL_FAIL, LOGIN_USER_DETAIL_REQ, LOGIN_USER_DETAIL_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS, UPDATE_USER_FAIL, UPDATE_USER_REQ, UPDATE_USER_SUCCESS } from '../Constants/userConstant';
 
 export const LoginUserNow = (formData) => async (dispatch) => {
   try {
@@ -38,6 +38,28 @@ export const RegisterUserNow = (formData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: REGISTER_USER_FAIL,
+      payload: error.response || error.response.data.message ?
+        error.response.data.message : error.message
+    })
+  }
+}
+
+export const updateUserNow = (formData) => async (dispatch) => {
+  try {
+    dispatch({ type: UPDATE_USER_REQ });
+    const config = {
+      headers: {
+        'Content-Type': 'multi-part/form-data',
+      },
+    };
+    const { data } = await axios.put('/api/v1/users/update/me', formData, config);
+    dispatch({
+      type: UPDATE_USER_SUCCESS,
+      payload: data
+    })
+  } catch (error) {
+    dispatch({
+      type: UPDATE_USER_FAIL,
       payload: error.response || error.response.data.message ?
         error.response.data.message : error.message
     })

@@ -235,7 +235,8 @@ export const updateUser = async (req, res) => {
     await user.save();
     res.status(200).json({
       success: true,
-      user
+      user,
+      message: "Profile Updated! Back Home to See Change"
     })
   } catch (error) {
     res.status(500).json({
