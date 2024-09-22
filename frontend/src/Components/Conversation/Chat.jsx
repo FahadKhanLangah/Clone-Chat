@@ -3,23 +3,33 @@ import { useDispatch, useSelector } from "react-redux";
 import { getMessage } from "../../Redux/Actions/converAction";
 import { toast, ToastContainer } from 'react-toastify'
 import socket from "../../socket";
+import { useParams } from "react-router-dom";
 
 const Chat = () => {
   const [chat, setChat] = useState([]);
-  const { converId } = useSelector((v) => v.conversations);
   const { messages, error } = useSelector((v) => v.message);
   const { user } = useSelector((v) => v.auth);
   const dispatch = useDispatch();
   const chatEndRef = useRef(null);
+  const { converId } = useSelector((v) => v.conversations);
+  const { cid } = useParams();
+  const [conId,setConId] = useState("")
+  useEffect(() => {
+    if (cid) {
+      setConId(cid);
+    } else {
+      setConId(converId);
+    }
+  }, [cid, converId]);
+  useEffect(() => {
+    if (conId) {
+      dispatch(getMessage(conId));
+      socket.emit('joinConversation', conId);
+    }
+  }, [dispatch, conId]);
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, chat]);
-  useEffect(() => {
-    if (converId) {
-      dispatch(getMessage(converId));
-      socket.emit('joinConversation', converId);
-    }
-  }, [dispatch, converId]);
   useEffect(() => {
     socket.on('receiveMessage', (newMessage) => {
       setChat((prevChat) => [...prevChat, newMessage]);

@@ -12,7 +12,7 @@ import MyConversation from "./Conversation/MyConversation";
 import { io } from "socket.io-client";
 const Home = () => {
   const [search, setSearch] = useState('');
-  const [active, setActive] = useState(false)
+  const [active, setActive] = useState(true)
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { isAuth, message, error, loading } = useSelector((v) => v.auth);

@@ -19,8 +19,8 @@ const MyConversation = () => {
     }
   }, [error]);
 
-  const handleNavigate = (id) => {
-    navigate(`/conversation/${id}`);
+  const handleNavigate = (id,converId) => {
+    navigate(`/conversation/${id}/${converId}`);
   };
 
   return (
@@ -37,7 +37,7 @@ const MyConversation = () => {
             <div
               key={i}
               className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400"
-              onClick={() => handleNavigate(otherParticipant._id)}
+              onClick={() => handleNavigate(otherParticipant._id,conversation._id)}
             >
               <div className="flex flex-[20%] items-center h-20 w-20 border-b-1 mt-1">
                 <img

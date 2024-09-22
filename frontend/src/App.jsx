@@ -33,6 +33,10 @@ const route = createBrowserRouter([
     element : < Conversation />
   },
   {
+    path : '/conversation/:id/:cid',
+    element : < Conversation />
+  },
+  {
     path : '/game/:id',
     element : < Game />
   }
