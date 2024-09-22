@@ -31,7 +31,7 @@ const ProfileDetail = () => {
         <span className='w-full'>
           <h1 className='text-gray-200 font-bold'>Name</h1>
           <span className='flex justify-between text-xl w-full'>
-            <h2 className='text-2xl font-bold'>Fahad Khan</h2>
+            <h2 className='text-2xl font-bold'>{user.name}</h2>
             <span className='hover:text-orange-500 text-2xl cursor-pointer'>
               <MdEdit/>
             </span>
