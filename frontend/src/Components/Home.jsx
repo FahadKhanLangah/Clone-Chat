@@ -6,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { clearErrors, logoutUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
+import { clearErrors, getLoginUser, logoutUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
 import MyConversation from "./Conversation/MyConversation";
 import { io } from "socket.io-client";
@@ -18,6 +18,9 @@ const Home = () => {
   const { isAuth, message, error, loading } = useSelector((v) => v.auth);
   const { user } = useSelector((state) => state.auth);
   const [onlineUsers, setOnlineUsers] = useState([]);
+  useEffect(()=>{
+    dispatch(getLoginUser())
+  },[dispatch])
   useEffect(() => {
     if (user) {
       const socket = io('http://localhost:4000', {

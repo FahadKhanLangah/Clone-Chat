@@ -212,3 +212,35 @@ export const logoutUser = async (req, res) => {
     });
   }
 };
+
+export const updateUser = async (req, res) => {
+  try {
+    const user = req.user;
+    const { name, about, phone } = req.body;
+    if (name) user.name = name;
+    if (about) user.about = about;
+    if (phone) user.phone = phone;
+    if (req.file) {
+      if (user.avatar && user.avatar.public_id) {
+        await cloudinary.v2.uploader.destroy(user.avatar.public_id)
+      }
+      const myCloud = await cloudinary.v2.uploader.upload(req.file.path, {
+        folder: "FKChatAvatars",
+        width: 250,
+        crop: "scale"
+      });
+      user.avatar.public_id = myCloud.public_id;
+      user.avatar.url = myCloud.secure_url
+    }
+    await user.save();
+    res.status(200).json({
+      success: true,
+      user
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}

@@ -1,4 +1,4 @@
-import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
+import { CHAT_USER_FAIL, CHAT_USER_REQ, CHAT_USER_SUCCESS, CLEAR_ERRORS, LOGIN_USER_DETAIL_FAIL, LOGIN_USER_DETAIL_REQ, LOGIN_USER_DETAIL_SUCCESS, LOGIN_USER_FAIL, LOGIN_USER_REQ, LOGIN_USER_SUCCESS, LOGOUT_USER_FAIL, LOGOUT_USER_REQ, LOGOUT_USER_SUCCESS, OTHER_USER_FAIL, OTHER_USER_REQ, OTHER_USER_SUCCESS, REGISTER_USER_FAIL, REGISTER_USER_REQ, REGISTER_USER_SUCCESS } from "../Constants/userConstant";
 
 const authState = {
   isAuth: localStorage.getItem('isAuth') === 'true',
@@ -11,6 +11,7 @@ export const authReducer = (state = authState, action) => {
     case REGISTER_USER_REQ:
     case LOGOUT_USER_REQ:
     case LOGIN_USER_REQ:
+    case LOGIN_USER_DETAIL_REQ:
       return {
         ...state,
         loading: true,
@@ -19,7 +20,6 @@ export const authReducer = (state = authState, action) => {
     case REGISTER_USER_SUCCESS:
     case LOGIN_USER_SUCCESS:
       localStorage.setItem('isAuth', action.payload.success);
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
       return {
         ...state,
         loading: false,
@@ -27,6 +27,14 @@ export const authReducer = (state = authState, action) => {
         error: null,
         user: action.payload.user,
         message: action.payload.message,
+      }
+    case LOGIN_USER_DETAIL_SUCCESS:
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      return {
+        ...state,
+        loading: false,
+        error: null,
+        user: action.payload.user,
       }
     case LOGOUT_USER_SUCCESS:
       localStorage.removeItem('isAuth');
@@ -45,6 +53,13 @@ export const authReducer = (state = authState, action) => {
         ...state,
         loading: false,
         isAuth: action.payload.success,
+        user: null,
+        error: action.payload,
+      }
+    case LOGIN_USER_DETAIL_FAIL:
+      return {
+        ...state,
+        loading: false,
         user: null,
         error: action.payload,
       }
