@@ -37,7 +37,7 @@ const MyConversation = () => {
             <div
               key={i}
               className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400"
-              onClick={() => handleNavigate(otherParticipant._id)} 
+              onClick={() => handleNavigate(otherParticipant._id)}
             >
               <div className="flex flex-[20%] items-center h-20 w-20 border-b-1 mt-1">
                 <img
@@ -48,7 +48,7 @@ const MyConversation = () => {
               </div>
               <div className="pt-4 flex-[80%] pl-6 overflow-hidden h-20">
                 <h1 className="text-2xl font-bold">{otherParticipant.name}</h1>
-                <p className="overflow-hidden">{otherParticipant.about}</p>
+                <p className={`overflow-hidden ${conversation?.lastMessage?.message ? "": "text-yellow-500"}`}>{conversation?.lastMessage?.message ? conversation?.lastMessage?.message : "No Last Message"}</p>
               </div>
             </div>
           );

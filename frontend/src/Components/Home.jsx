@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { clearErrors, logoutUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
-// import MyConversation from "./Conversation/MyConversation";
+import MyConversation from "./Conversation/MyConversation";
 import { io } from "socket.io-client";
 const Home = () => {
   const [search, setSearch] = useState('');
@@ -28,7 +28,7 @@ const Home = () => {
         dispatch(setOnlineUserNow(userId))
       });
       socket.on('userOffline', (userId) => {
-        setOnlineUsers((prev) => prev.filter((id) => id !== userId)); 
+        setOnlineUsers((prev) => prev.filter((id) => id !== userId));
       });
       return () => {
         socket.disconnect();
@@ -81,8 +81,9 @@ const Home = () => {
           </span>
         </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          {/* {active ? <MyConversation/> : <OtherUser />} */}
-          <OtherUser onlineUser={onlineUsers} />
+          {active ? <MyConversation /> : <OtherUser onlineUser={onlineUsers} />}
+          {/* <OtherUser onlineUser={onlineUsers} /> */}
+          {/* <MyConversation /> */}
         </div>
       </div>
       <div className="w-full sm:ml-10">

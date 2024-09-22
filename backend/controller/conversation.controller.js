@@ -1,5 +1,4 @@
 import Conversation from "../model/conversation.model.js";
-import Message from "../model/message.model.js";
 
 export const createConversation = async (req, res) => {
   try {
@@ -32,7 +31,7 @@ export const getConversation = async (req, res) => {
     const conversations = await Conversation.find({ participants: userId }).populate({
       path: 'participants',
       select: '-password',
-    }).select("-password")
+    }).select("-password").populate("lastMessage")
     if (!conversations) {
       return res.status(404).json({
         success: false,
@@ -57,7 +56,7 @@ export const getConversationDetail = async (req, res) => {
     const conversation = await Conversation.findById(conversationId).populate({
       path: 'participants',
       select: '-password',
-    }).select("-password")
+    }).select("-password").populate("lastMessage")
     if (!conversation) {
       return res.status(404).json({
         success: false,
