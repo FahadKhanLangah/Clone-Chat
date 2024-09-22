@@ -28,7 +28,7 @@ const Conversation = () => {
         <img className='h-16 w-16 p-1 object-fill rounded-full' src={chatUser?.avatar?.url} alt="No image found" />
         <div className='p-2'>
           <h1 className='text-2xl font-bold'>{chatUser?.name}</h1>
-          <p>{onlineUsers.includes(chatUser?._id) ? "Online" : "Last Seen today at 12:14 PM"}</p>
+          <p>{onlineUsers?.includes(chatUser?._id) ? "Online" : "Last Seen today at 12:14 PM"}</p>
         </div>
       </div>
       <hr />

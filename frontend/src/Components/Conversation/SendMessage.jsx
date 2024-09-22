@@ -5,19 +5,28 @@ import { toast } from 'react-toastify';
 import { sendMessage } from '../../Redux/Actions/converAction';
 import socket from '../../socket';
 import { IoGameController } from 'react-icons/io5';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 const SendMessage = () => {
   const [msg, setMsg] = useState('');
   const dispatch = useDispatch();
   const { converId } = useSelector((v) => v.conversations);
   const { user } = useSelector((v) => v.auth)
+  const { cid } = useParams();
+  const [conId, setConId] = useState("")
   useEffect(() => {
-    if (converId) {
-      socket.emit('joinConversation', converId);
+    if (cid) {
+      setConId(cid);
+    } else {
+      setConId(converId);
+    }
+  }, [cid, converId]);
+  useEffect(() => {
+    if (conId) {
+      socket.emit('joinConversation', conId);
       socket.connect();
     }
-  }, [converId]);
+  }, [conId]);
   const { error } = useSelector((v) => v.message);
   useEffect(() => {
     if (error) {
@@ -26,20 +35,20 @@ const SendMessage = () => {
   }, [error]);
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (msg && converId) {
+    if (msg && conId) {
       const messageData = {
-        conversationId: converId,
+        conversationId: conId,
         sender: user._id,
         message: msg,
       };
       socket.emit('sendMessage', messageData);
-      dispatch(sendMessage(converId, { message: msg }));
+      dispatch(sendMessage(conId, { message: msg }));
       setMsg("");
     }
   }
   const navigate = useNavigate();
-  const handleGameReq = ()=> {
-    navigate(`/game/${converId}`)
+  const handleGameReq = () => {
+    navigate(`/game/${conId}`)
   }
   return (
     <form onSubmit={handleSubmit}>

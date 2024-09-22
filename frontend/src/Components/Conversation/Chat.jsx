@@ -13,7 +13,7 @@ const Chat = () => {
   const chatEndRef = useRef(null);
   const { converId } = useSelector((v) => v.conversations);
   const { cid } = useParams();
-  const [conId,setConId] = useState("")
+  const [conId, setConId] = useState("")
   useEffect(() => {
     if (cid) {
       setConId(cid);
@@ -44,6 +44,13 @@ const Chat = () => {
     }
   }, [error])
   const allMessages = [...messages, ...chat];
+  let lastMessage;
+  if (allMessages.length > 0) {
+    lastMessage = allMessages[allMessages.length - 1];
+  } else {
+    lastMessage = null;
+  }
+  console.log(lastMessage);
   return (
     <div className='p-4 flex flex-col space-y-4'>
       <ToastContainer />
