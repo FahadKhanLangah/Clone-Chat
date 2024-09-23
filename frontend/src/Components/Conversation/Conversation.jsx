@@ -7,7 +7,8 @@ import { getOtherUsers } from '../../Redux/Actions/userAction'
 import { IoArrowBack } from 'react-icons/io5'
 
 const Conversation = () => {
-  const { users, loading, onlineUsers } = useSelector((v) => v.users);
+  const { users, loading, } = useSelector((v) => v.users);
+  const { onlineUsers } = useSelector((v) => v.auth);
   const { id } = useParams();
   const chatUser = users.find((user) => user._id === id);
   const dispatch = useDispatch();
