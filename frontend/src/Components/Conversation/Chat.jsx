@@ -5,6 +5,8 @@ import { toast, ToastContainer } from 'react-toastify'
 import socket from "../../socket";
 import { useParams } from "react-router-dom";
 import { setLastMsg } from "../../Redux/Actions/messageAction";
+import { FaCheck, FaCheckDouble } from "react-icons/fa6";
+
 
 const Chat = () => {
   const [chat, setChat] = useState([]);
@@ -44,10 +46,10 @@ const Chat = () => {
   useEffect(() => {
     if (conId && allMessages.length > 0) {
       setLastMessage(allMessages[allMessages.length - 1]);
-    }else {
+    } else {
       setLastMessage(null);
     }
-  }, [allMessages,conId]);
+  }, [allMessages, conId]);
 
   useEffect(() => {
     if (conId && lastMessage) {
@@ -62,8 +64,12 @@ const Chat = () => {
       {
         allMessages.map((v, i) =>
           <div key={i} className={`flex ${user._id !== v.sender ? "justify-start" : "justify-end"}`}>
-            <div className={` p-3 rounded-lg max-w-md ${user._id === v.sender ? "bg-gray-300 text-black" : "bg-blue-500 text-white"}`}>
-              {v.message}
+            <div className={` p-2 pl-3 pb-4 flex min-w-28 flex-col relative rounded-lg max-w-md ${user._id === v.sender ? "bg-gray-300 text-black" : "bg-green-400 text-black"}`}>
+              <div className="pr-5">{v.message}</div>
+              <p className="text-[10px] bottom-0 absolute flex gap-2 right-2">
+                <div>{new Date(v.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                <div className="text-[14px]">{v.isRead ? <FaCheckDouble className="text-blue-500" /> : <FaCheck className="text-gray-500" />}</div>
+              </p>
             </div>
           </div>
         )
