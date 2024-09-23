@@ -18,7 +18,14 @@ const MyConversation = () => {
       toast.error(error);
     }
   }, [error]);
+  // Look here we have used slice to create shallow 
+  //if we dont use slice then it will change the org conservations state
+  // which cause erro because redux store is immutable
   const sortedConversations = conversations?.slice().sort((a, b) => {
+    // we can write Simple as like this
+    // const datea = new Date(a.lastMessage.createdAt);
+    // const dateb = new Date(b.lastMessage.createdAt);
+    // this is optional chaning to avoid any error
     const dateA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt) : new Date(0);
     const dateB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt) : new Date(0);
     return dateB - dateA;
