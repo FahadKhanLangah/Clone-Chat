@@ -45,22 +45,26 @@ const OtherUser = ({ onlineUser, searchUser }) => {
           <h1 className="px-4 underline text-xl font-semibold">
             Searched User
           </h1>
-          {searchedUser.map((v)=><>
-          <div onClick={() => handleNavigate(v._id)} className="flex ml-12 items-center cursor-pointer online h-20 w-20 border-b-1 mt-1 relative">
-          <img
-            className="online h-16 p-1 m-2 ml-6 w-16 rounded-full"
-            src={v?.avatar?.url}
-            alt="User avatar"
-          />
-          {onlineUser && onlineUser.includes(v?._id) ? <div className="absolute  right-0 sm:right-10 top-4 h-3 w-3 border-2 border-white bg-green-500 rounded-full" /> : null}
-        </div>
-        <div onClick={() => handleNavigate(v._id)} className="pt-1 ml-12 cursor-pointer pl-2 overflow-hidden mb-2">
-          <h1 className="text-lg font-bold">{v.name}</h1>
-        </div></>
+          {searchedUser.map((v) =>
+           <div className="flex flex-col justify-start items-center" key={v._id}>
+           <div onClick={() => handleNavigate(v._id)} className="flex  items-center cursor-pointer online h-20 w-20 border-b-1 mt-1 relative">
+              <img
+                className="online h-20 w-20 rounded-full"
+                src={v?.avatar?.url}
+                alt="User avatar"
+              />
+              {onlineUser && onlineUser.includes(v?._id) ? <div className="absolute right-0 sm:right-10 top-4 h-3 w-3 border-2 border-white bg-green-500 rounded-full" /> : null}
+            </div>
+            <div onClick={() => handleNavigate(v._id)} className="pt-1 cursor-pointer overflow-hidden mb-2">
+              <h1 className="text-lg font-bold">{v.name}</h1>
+            </div>
+           </div>
           )}
         </div>
         <hr />
-      </> : null}
+      </> : <>
+      <h1 className="text-red-600 p-2 font-bold backdrop-brightness-50 backdrop-blur-3xl">No Searched User</h1>
+      </>}
       {users && users.length > 0 ? (
         users.map((v, i) => (
           <div key={i} className="flex backdrop-blur-3xl bg-opacity-100 mb-1 hover:bg-gray-400">
