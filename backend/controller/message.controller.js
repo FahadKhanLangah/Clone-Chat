@@ -77,3 +77,50 @@ export const updateMessage = async (req, res) => {
     })
   }
 }
+
+export const deleteMessage = async (req, res) => {
+  try {
+    const mids = req.body;
+    const user = req.user;
+    if (!Array.isArray(mids) || mids.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Please Provide the message IDs"
+      })
+    }
+    const messages = await Message.find({ _id: { $in: mids } });
+    if (!messages || messages.length === 0) {
+      res.status(400).json({
+        success: false,
+        message: "Message not found"
+      })
+    }
+    const updatedMessages = [];
+    for (const message of messages) {
+      if (!message.deletedBy.includes(user._id)) {
+        message.deletedBy.push(user._id);
+        await message.save();
+        updatedMessages.push(message);
+      }
+    }
+
+    if (updatedMessages.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: "Message already deleted by this user",
+      });
+    }
+    return res.status(200).json({
+      success: true,
+      message: "Messages Deleted SuccessFully"
+    })
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message
+    })
+  }
+}
+
+// Frontend
+//const filteredMessages = messages.filter(message => !message.deletedBy.includes(currentUserId));

@@ -5,7 +5,7 @@ const authState = {
   user: JSON.parse(localStorage.getItem('user')) || {},
   error: null,
   loading: false,
-  onlineUsers : []
+  onlineUsers: []
 }
 export const authReducer = (state = authState, action) => {
   switch (action.type) {
@@ -75,6 +75,11 @@ export const authReducer = (state = authState, action) => {
         error: action.payload,
       }
     case LOGIN_USER_DETAIL_FAIL:
+      if (action.payload === "Session expired. Please log in again.") {
+        localStorage.removeItem('isAuth');
+        localStorage.removeItem('user');
+        localStorage.removeItem('users');
+      }
       return {
         ...state,
         loading: false,

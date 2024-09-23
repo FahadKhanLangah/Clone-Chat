@@ -1,5 +1,5 @@
 import axios from "axios";
-import { GET_LAST_MESSAGE_FAIL, GET_LAST_MESSAGE_REQ, GET_LAST_MESSAGE_SUCCESS, SET_LAST_MESSAGE_FAIL, SET_LAST_MESSAGE_REQ, SET_LAST_MESSAGE_SUCCESS, UPDATE_READ_MESSAGE_FAIL, UPDATE_READ_MESSAGE_REQ, UPDATE_READ_MESSAGE_SUCCESS } from "../Constants/converConstant"
+import { DELETE_MESSAGE_FAIL, DELETE_MESSAGE_REQ, DELETE_MESSAGE_SUCCESS, SET_LAST_MESSAGE_FAIL, SET_LAST_MESSAGE_REQ, SET_LAST_MESSAGE_SUCCESS, UPDATE_READ_MESSAGE_FAIL, UPDATE_READ_MESSAGE_REQ, UPDATE_READ_MESSAGE_SUCCESS } from "../Constants/converConstant"
 
 
 export const setLastMsg = (lastMsgId, conversationId) => async (dispatch) => {
@@ -17,22 +17,21 @@ export const setLastMsg = (lastMsgId, conversationId) => async (dispatch) => {
     })
   }
 }
-export const getLastMsg = (conversationId) => async (dispatch) => {
+export const deleteMessageNow = (mids) => async (dispatch) => {
   try {
-    dispatch({ type: GET_LAST_MESSAGE_REQ })
-    const { data } = await axios.post("/api/v1/message/getLastMessage", conversationId);
+    dispatch({ type: DELETE_MESSAGE_REQ })
+    const { data } = await axios.post("/api/v1/message/delete/message", mids);
     dispatch({
-      GET_LAST_MESSAGE_SUCCESS,
+      type: DELETE_MESSAGE_SUCCESS,
       payload: data
     })
   } catch (error) {
     dispatch({
-      type: GET_LAST_MESSAGE_FAIL,
+      type: DELETE_MESSAGE_FAIL,
       payload: error.message || error.response.data.error
     })
   }
 }
-
 export const updateReadStatus = (conversationId) => async (dispatch) => {
   try {
     dispatch({ type: UPDATE_READ_MESSAGE_REQ });
@@ -44,7 +43,8 @@ export const updateReadStatus = (conversationId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: UPDATE_READ_MESSAGE_FAIL,
-      payload: error.message || error.response.data.message
+      payload: error.response || error.response.data.message ?
+        error.response.data.message : error.message
     })
   }
 }

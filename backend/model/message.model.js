@@ -6,7 +6,8 @@ const messageSchema = new mongoose.Schema({
   message: { type: String, required: true },
   media: { type: String, default: null },
   messageType: { type: String, enum: ['text', 'image', 'video', 'file'], default: 'text' },
-  isRead: { type: Boolean, default: false }
+  isRead: { type: Boolean, default: false },
+  deletedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
 }, { timestamps: true });
 
 const Message = mongoose.model("Message", messageSchema);

@@ -7,8 +7,9 @@ import { useParams } from "react-router-dom";
 import { setLastMsg, updateReadStatus } from "../../Redux/Actions/messageAction";
 import { FaCheck, FaCheckDouble } from "react-icons/fa6";
 import { clearErrors } from "../../Redux/Actions/userAction";
+import PropTypes from 'prop-types';
 
-const Chat = () => {
+const Chat = ({ setSelectedMessages, selectedMessages }) => {
   const [chat, setChat] = useState([]);
   const { messages, error } = useSelector((v) => v.message);
   const { user } = useSelector((v) => v.auth);
@@ -42,7 +43,7 @@ const Chat = () => {
       toast.error(error)
       dispatch(clearErrors())
     }
-  }, [error,dispatch])
+  }, [error, dispatch])
   const allMessages = useMemo(() => [...messages, ...chat], [messages, chat]);
   const [lastMessage, setLastMessage] = useState(null);
   useEffect(() => {
@@ -59,14 +60,26 @@ const Chat = () => {
       dispatch(setLastMsg(id, conId));
     }
   }, [dispatch, conId, lastMessage]);
-
+  const handleToggleMsgSelection = (messageId) => {
+    setSelectedMessages((prevSelected) => {
+      if (prevSelected.includes(messageId)) {
+        return prevSelected.filter((id) => id !== messageId);
+      } else {
+        return [...prevSelected, messageId];
+      }
+    });
+  };
+  const filteredMessages = allMessages.filter(message => !message.deletedBy.includes(user._id));
   return (
     <div className='p-4 flex flex-col space-y-4'>
       <ToastContainer />
       {
-        allMessages.map((v, i) =>
+        filteredMessages.map((v, i) =>
           <div key={i} className={`flex ${user._id !== v.sender ? "justify-start" : "justify-end"}`}>
-            <div className={` p-2 pl-3 pb-4 flex min-w-28 flex-col relative rounded-lg max-w-md ${user._id === v.sender ? "bg-gray-300 text-black" : "bg-green-400 text-black"}`}>
+            <div onClick={() => handleToggleMsgSelection(v._id)}
+              className={`p-2 pl-3 pb-4 flex min-w-28 flex-col relative rounded-lg max-w-md 
+              ${user._id === v.sender ? 'bg-gray-300 text-black' : 'bg-green-400 text-black'}
+              ${selectedMessages.includes(v._id) ? 'bg-blue-500 w-full' : ''}`}>
               <div className="pr-5">{v.message}</div>
               <p className="text-[10px] bottom-0 absolute flex gap-2 right-2">
                 <div>{new Date(v.createdAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
@@ -80,4 +93,8 @@ const Chat = () => {
     </div>
   )
 }
+Chat.propTypes = {
+  setSelectedMessages: PropTypes.func.isRequired,
+  selectedMessages: PropTypes.arrayOf(PropTypes.string).isRequired,
+};
 export default Chat
