@@ -1,4 +1,4 @@
-import { GET_LAST_MESSAGE_FAIL, GET_LAST_MESSAGE_REQ, GET_LAST_MESSAGE_SUCCESS, SET_LAST_MESSAGE_FAIL, SET_LAST_MESSAGE_REQ, SET_LAST_MESSAGE_SUCCESS } from "../Constants/converConstant";
+import { GET_LAST_MESSAGE_FAIL, GET_LAST_MESSAGE_REQ, GET_LAST_MESSAGE_SUCCESS, SET_LAST_MESSAGE_FAIL, SET_LAST_MESSAGE_REQ, SET_LAST_MESSAGE_SUCCESS, UPDATE_READ_MESSAGE_FAIL, UPDATE_READ_MESSAGE_REQ, UPDATE_READ_MESSAGE_SUCCESS } from "../Constants/converConstant";
 
 
 const initialState = {
@@ -10,9 +10,16 @@ export const msgReducer = (state = initialState, action) => {
   switch (action.type) {
     case SET_LAST_MESSAGE_REQ:
     case GET_LAST_MESSAGE_REQ:
+    case UPDATE_READ_MESSAGE_REQ:
       return {
         ...state,
         loading: true,
+      }
+    case UPDATE_READ_MESSAGE_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        success: action.payload.success
       }
     case SET_LAST_MESSAGE_SUCCESS:
       return {
@@ -27,6 +34,7 @@ export const msgReducer = (state = initialState, action) => {
       }
     case SET_LAST_MESSAGE_FAIL:
     case GET_LAST_MESSAGE_FAIL:
+      case UPDATE_READ_MESSAGE_FAIL:
       return {
         ...state,
         loading: false,

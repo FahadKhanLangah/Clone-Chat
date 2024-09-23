@@ -4,8 +4,9 @@ import { getMessage } from "../../Redux/Actions/converAction";
 import { toast, ToastContainer } from 'react-toastify'
 import socket from "../../socket";
 import { useParams } from "react-router-dom";
-import { setLastMsg } from "../../Redux/Actions/messageAction";
+import { setLastMsg, updateReadStatus } from "../../Redux/Actions/messageAction";
 import { FaCheck, FaCheckDouble } from "react-icons/fa6";
+import { clearErrors } from "../../Redux/Actions/userAction";
 
 
 const Chat = () => {
@@ -23,6 +24,7 @@ const Chat = () => {
       setLastMessage(null);
       dispatch(getMessage(conId));
       socket.emit('joinConversation', conId);
+      dispatch(updateReadStatus(conId));
     }
   }, [dispatch, conId]);
   useEffect(() => {
@@ -39,8 +41,9 @@ const Chat = () => {
   useEffect(() => {
     if (error) {
       toast.error(error)
+      dispatch(clearErrors())
     }
-  }, [error])
+  }, [error,dispatch])
   const allMessages = useMemo(() => [...messages, ...chat], [messages, chat]);
   const [lastMessage, setLastMessage] = useState(null);
   useEffect(() => {
