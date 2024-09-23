@@ -4,10 +4,21 @@ const authState = {
   isAuth: localStorage.getItem('isAuth') === 'true',
   user: JSON.parse(localStorage.getItem('user')) || {},
   error: null,
-  loading: false
+  loading: false,
+  onlineUsers : []
 }
 export const authReducer = (state = authState, action) => {
   switch (action.type) {
+    case "SET_ONLINE_USER":
+      return {
+        ...state,
+        onlineUsers: [...state.onlineUsers, action.payload],
+      };
+    case "REMOVE_ONLINE_USER":
+      return {
+        ...state,
+        onlineUsers: state.onlineUsers.filter((id) => id !== action.payload),
+      };
     case REGISTER_USER_REQ:
     case LOGOUT_USER_REQ:
     case LOGIN_USER_REQ:

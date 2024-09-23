@@ -140,9 +140,19 @@ export const getChatUsers = (id) => async (dispatch) => {
   }
 }
 
-export const setOnlineUserNow = (onlineUsers) => (dispatch) => {
-  dispatch({
-    type: 'SET_ONLINE_USERS',
-    payload: onlineUsers,
-  });
-};
+// export const setOnlineUserNow = (onlineUsers) => (dispatch) => {
+//   dispatch({
+//     type: 'SET_ONLINE_USERS',
+//     payload: onlineUsers,
+//   });
+// };
+
+export const setOnlineUserNow = (userId) => ({
+  type: "SET_ONLINE_USER",
+  payload: userId,
+});
+
+export const removeOnlineUserNow = (userId) => ({
+  type: "REMOVE_ONLINE_USER",
+  payload: userId,
+});

@@ -20,7 +20,7 @@ const Conversation = () => {
   if (loading) {
     return <div>Please wait</div>;
   }
-  const handleNavigate = ()=>{
+  const handleNavigate = () => {
     navigate(`/chatuser/${id}`)
   }
   return (

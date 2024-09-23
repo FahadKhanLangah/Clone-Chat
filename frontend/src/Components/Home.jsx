@@ -6,7 +6,7 @@ import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-import { clearErrors, getLoginUser, logoutUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
+import { clearErrors, getLoginUser, logoutUserNow, removeOnlineUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
 import MyConversation from "./Conversation/MyConversation";
 import { io } from "socket.io-client";
@@ -18,8 +18,14 @@ const Home = () => {
   const { isAuth, error, loading } = useSelector((v) => v.auth);
   const { user } = useSelector((state) => state.auth);
   const { users } = useSelector((v) => v.users);
-  const [onlineUsers, setOnlineUsers] = useState([]);
+  const [onlineUser, setOnlineUsers] = useState([]);
   const [searchedUser, setSearchUser] = useState([]);
+  const { onlineUsers } = useSelector((v) => v.auth);
+  useEffect(() => {
+    if (onlineUsers) {
+      setOnlineUsers(onlineUsers)
+    }
+  }, [onlineUsers])
   useEffect(() => {
     dispatch(getLoginUser())
   }, [dispatch])
@@ -29,15 +35,11 @@ const Home = () => {
         query: { userId: user._id },
       });
       socket.on('userOnline', (userId) => {
-        setOnlineUsers((prev) => [...prev, userId]); // Add user to online list
-        dispatch(setOnlineUserNow(userId))
+        dispatch(setOnlineUserNow(userId));
       });
       socket.on('userOffline', (userId) => {
-        setOnlineUsers((prev) => prev.filter((id) => id !== userId));
+        dispatch(removeOnlineUserNow(userId));
       });
-      return () => {
-        socket.disconnect();
-      };
     }
   }, [user, dispatch]);
   const handleSearch = (e) => {
@@ -97,7 +99,7 @@ const Home = () => {
           </span>
         </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          {active ? <MyConversation /> : <OtherUser searchUser={searchedUser} onlineUser={onlineUsers} />}
+          {active ? <MyConversation /> : <OtherUser searchUser={searchedUser} onlineUser={onlineUser} />}
           {/* <OtherUser onlineUser={onlineUsers} /> */}
           {/* <MyConversation /> */}
         </div>

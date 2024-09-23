@@ -8,7 +8,6 @@ import { setLastMsg, updateReadStatus } from "../../Redux/Actions/messageAction"
 import { FaCheck, FaCheckDouble } from "react-icons/fa6";
 import { clearErrors } from "../../Redux/Actions/userAction";
 
-
 const Chat = () => {
   const [chat, setChat] = useState([]);
   const { messages, error } = useSelector((v) => v.message);
