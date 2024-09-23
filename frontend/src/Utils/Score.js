@@ -1,3 +1,5 @@
+
+
 const initialScore = localStorage.getItem("score") ? JSON.parse(localStorage.getItem("score")) : {
   wins: 0,
   tie: 0,
@@ -27,4 +29,9 @@ export default function ScoreCalc(myPick, oppoPick) {
   }
   localStorage.setItem("score", JSON.stringify(score));
   return state;
+}
+
+export function SearchFunc(search, users) {
+  let searchUser = users.find((v) => v.name === search);
+  console.log(searchUser);
 }

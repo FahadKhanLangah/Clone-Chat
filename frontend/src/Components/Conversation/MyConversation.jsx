@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getConversation } from "../../Redux/Actions/converAction";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
 const MyConversation = () => {
@@ -18,14 +18,11 @@ const MyConversation = () => {
       toast.error(error);
     }
   }, [error]);
-
   const handleNavigate = (id,converId) => {
     navigate(`/conversation/${id}/${converId}`);
   };
-
   return (
     <>
-      <ToastContainer />
       {conversations && conversations.length > 0 ? (
         conversations.map((conversation, i) => {
           const otherParticipant = conversation.participants.find(

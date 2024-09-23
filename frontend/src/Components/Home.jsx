@@ -17,10 +17,12 @@ const Home = () => {
   const dispatch = useDispatch();
   const { isAuth, error, loading } = useSelector((v) => v.auth);
   const { user } = useSelector((state) => state.auth);
+  const { users } = useSelector((v) => v.users);
   const [onlineUsers, setOnlineUsers] = useState([]);
-  useEffect(()=>{
+  const [searchedUser, setSearchUser] = useState([]);
+  useEffect(() => {
     dispatch(getLoginUser())
-  },[dispatch])
+  }, [dispatch])
   useEffect(() => {
     if (user) {
       const socket = io('http://localhost:4000', {
@@ -40,7 +42,21 @@ const Home = () => {
   }, [user, dispatch]);
   const handleSearch = (e) => {
     e.preventDefault();
-    console.log(search)
+    let searchUser;
+
+    if (users && users.length > 0) {
+      searchUser = users.find((v) => {
+        return v.name && v.name.toLowerCase().includes(search.toLowerCase());
+      });
+    }
+    if (searchUser) {
+      setActive(false)
+      setSearchUser([searchUser]);
+      setSearch('');
+    } else {
+      toast.info("User Not Found");
+      setSearchUser([]);
+    }
   }
   useEffect(() => {
     if (error) {
@@ -50,7 +66,7 @@ const Home = () => {
     if (!isAuth) {
       navigate('/login')
     }
-  }, [ error, dispatch, isAuth, navigate])
+  }, [error, dispatch, isAuth, navigate])
   const handleLogout = () => {
     dispatch(logoutUserNow());
   }
@@ -81,7 +97,7 @@ const Home = () => {
           </span>
         </div>
         <div className="sm:h-[400px] h-[750px] overflow-auto">
-          {active ? <MyConversation /> : <OtherUser onlineUser={onlineUsers} />}
+          {active ? <MyConversation /> : <OtherUser searchUser={searchedUser} onlineUser={onlineUsers} />}
           {/* <OtherUser onlineUser={onlineUsers} /> */}
           {/* <MyConversation /> */}
         </div>
