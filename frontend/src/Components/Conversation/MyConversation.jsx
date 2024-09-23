@@ -18,13 +18,18 @@ const MyConversation = () => {
       toast.error(error);
     }
   }, [error]);
+  const sortedConversations = conversations?.slice().sort((a, b) => {
+    const dateA = a.lastMessage?.createdAt ? new Date(a.lastMessage.createdAt) : new Date(0);
+    const dateB = b.lastMessage?.createdAt ? new Date(b.lastMessage.createdAt) : new Date(0);
+    return dateB - dateA;
+  });
   const handleNavigate = (id, converId) => {
     navigate(`/conversation/${id}/${converId}`);
   };
   return (
     <>
-      {conversations && conversations.length > 0 ? (
-        conversations.map((conversation, i) => {
+      {sortedConversations && sortedConversations.length > 0 ? (
+        sortedConversations.map((conversation, i) => {
           const otherParticipant = conversation.participants.find(
             (participant) => participant._id !== user._id
           );
