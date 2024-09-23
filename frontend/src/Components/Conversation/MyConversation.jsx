@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getConversation } from "../../Redux/Actions/converAction";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-
+import { BsBellFill } from "react-icons/bs";
 const MyConversation = () => {
   const { error, conversations } = useSelector((v) => v.conversations);
   const { user, onlineUsers } = useSelector((v) => v.auth);
@@ -58,7 +58,14 @@ const MyConversation = () => {
               </div>
               <div className="pt-4 flex-[80%] pl-6 overflow-hidden h-20">
                 <h1 className="text-2xl font-bold">{otherParticipant.name}</h1>
-                <p className={`overflow-hidden ${conversation?.lastMessage?.message ? "" : "text-yellow-500"}`}>{conversation?.lastMessage?.message ? conversation?.lastMessage?.message : "No Last Message"}</p>
+                <div className={`overflow-hidden flex justify-between ${conversation?.lastMessage?.message ? "text-white" : "text-yellow-500"} ${user._id !== conversation?.lastMessage?.sender ? (conversation?.lastMessage?.isRead ? "text-white" : "text-green-600 font-bold") : "text-white"}`}>
+                  <span>
+                    {conversation?.lastMessage?.message}
+                  </span>
+                  <span className="text-2xl text-orange-600 pr-4">
+                    {user._id !== conversation?.lastMessage?.sender && !conversation?.lastMessage?.isRead && <BsBellFill />}
+                  </span>
+                </div>
               </div>
             </div>
           );
