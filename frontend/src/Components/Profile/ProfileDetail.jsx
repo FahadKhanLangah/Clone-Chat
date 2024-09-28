@@ -6,7 +6,7 @@ import { MdEdit } from "react-icons/md";
 import { IoIosInformationCircleOutline } from "react-icons/io";
 import { FaPhoneAlt } from "react-icons/fa";
 import { useEffect, useState } from 'react';
-import { toast, ToastContainer } from 'react-toastify';
+import { toast } from 'react-toastify';
 import { updateUserNow } from '../../Redux/Actions/userAction';
 const ProfileDetail = () => {
   const { user, message } = useSelector((v) => v.auth);
@@ -39,7 +39,6 @@ const ProfileDetail = () => {
   }
   return (
     <div className='bg-blue-900 sm:mb-10 sm:mt-2 w-[420px] sm:w-[600px] h-[1000px]  sm:h-full rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20'>
-      <ToastContainer />
       <div className="flex ml-5 my-4 gap-5 text-3xl text-black font-bold p-2">
         <span onClick={() => window.history.back()} className='pt-1 hover:text-white'>
           <IoArrowBack />

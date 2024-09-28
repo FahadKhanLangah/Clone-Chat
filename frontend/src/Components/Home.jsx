@@ -5,7 +5,7 @@ import { GrLogout } from "react-icons/gr";
 import { CgProfile } from "react-icons/cg";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { clearErrors, getLoginUser, logoutUserNow, removeOnlineUserNow, setOnlineUserNow } from "../Redux/Actions/userAction";
 import OtherUser from "./OtherUser";
 import MyConversation from "./Conversation/MyConversation";
@@ -74,7 +74,6 @@ const Home = () => {
   }
   return (
     <div className="w-full flex flex-col justify-center items-center">
-      <ToastContainer />
       <div className="w-[100%] sm:w-[600px] sm:mt-8 h-full bg-blue-600 rounded-md bg-clip-padding backdrop-filter backdrop-blur-sm bg-opacity-20 ">
         <div className="flex justify-between sm:h-12">
           <div className="text-white font-bold text-2xl p-2">LetsChaT</div>

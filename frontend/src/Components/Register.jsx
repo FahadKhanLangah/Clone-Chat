@@ -2,7 +2,7 @@ import { useEffect, useState } from "react"
 import { Link, useNavigate } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { clearErrors, RegisterUserNow } from "../Redux/Actions/userAction";
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import image from '../assets/image.png'
 
 const Register = () => {
@@ -40,7 +40,6 @@ const Register = () => {
   }
   return (
     <div className="backdrop-blur-xl bg-opacity-40 mt-56 p-2 sm:mt-20  w-[100%] sm:w-[600px] sm:mb-72 mb-96">
-      <ToastContainer />
       <div className="text-3xl font-bold p-6">
         Register Page
       </div>

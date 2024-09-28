@@ -8,7 +8,7 @@ import { IoArrowBack } from 'react-icons/io5'
 import { MdDelete } from "react-icons/md";
 import { MdInfoOutline } from "react-icons/md";
 import { deleteMessageNow } from '../../Redux/Actions/messageAction'
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 
 const Conversation = () => {
   const { users, loading, } = useSelector((v) => v.users);
@@ -48,7 +48,6 @@ const Conversation = () => {
   return (
     <div className='sm:mt-2 sm:mb-2 sm:w-[600px] w-full h-full bg-purple-700 rounded-md bg-clip-padding backdrop-filter backdrop-blur-xl bg-opacity-60 border border-gray-100'>
       <div className='p-2 flex gap-4 h-[10vh] sm:h-[14vh]'>
-        <ToastContainer/>
         <span onClick={() => window.history.back()} className='pt-5 hover:text-orange-400 text-3xl'>
           <IoArrowBack />
         </span>

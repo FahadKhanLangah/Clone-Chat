@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getMessage } from "../../Redux/Actions/converAction";
-import { toast, ToastContainer } from 'react-toastify'
+import { toast } from 'react-toastify'
 import socket from "../../socket";
 import { useParams } from "react-router-dom";
 import { setLastMsg, updateReadStatus } from "../../Redux/Actions/messageAction";
@@ -72,7 +72,6 @@ const Chat = ({ setSelectedMessages, selectedMessages }) => {
   const filteredMessages = allMessages.filter(message => !message.deletedBy.includes(user._id));
   return (
     <div className='p-4 flex flex-col space-y-4'>
-      <ToastContainer />
       {
         filteredMessages.map((v, i) =>
           <div key={i} className={`flex ${user._id !== v.sender ? "justify-start" : "justify-end"}`}>
